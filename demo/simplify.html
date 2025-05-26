@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <style>
+        .grd {
+            display: grid;
+            gap: 1em;
+            grid-template-columns: 1fr;
+        }
+
+        svg {
+            /* width: 1000px;*/
+            max-height: 90vh;
+            max-width: 100%;
+            display: block;
+            overflow: visible;
+            margin: 2em;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="grd">
+        <svg id="svg1">
+            <path id="path0" d="" fill="none" stroke="green" stroke-width="1%" />
+            <path class="showMarkers" id="path" d="" fill="none" stroke="red" stroke-width="0.5%" />
+            <g id="commands"></g>
+        </svg>
+
+
+        <svg id="svg_o">
+            <path class="showMarkers" id="path_o" d="" fill="none" stroke="green" stroke-width="1%" />
+        </svg>
+
+        <svg id="svg_s" stroke-width="0.5%">
+            <path class="--showMarkers" id="path_s" d="" fill="none" stroke="green" stroke-width="1%" />
+        </svg>
+    </div>
+
+
+    <!-- 
+    -->
+
+
+    <!-- load sample -->
+    <script src="path_samples.js"></script>
+
+    <script src="../dist/SVGii.js"></script>
+    <script src="../dist/SVGii_visualize.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbenchee@latest/dist/jsBenchee.min.js"></script>
+
+    <!-- 
+
+    -->
+
+
+
+    <script>
+
+
+        //console.log(samples);
+
+        let sampleName = 'path_from_hell2'
+        sampleName = 'smiley_0_1'
+        //sampleName = 'cubic_circle_rot'
+        sampleName = 'smiley_0_001'
+        sampleName = 'smiley_1'
+        sampleName = 'circle_quadratic'
+        sampleName = 'g_fira'
+        sampleName = 'g_open'
+        sampleName = 'pivots'
+        sampleName = 'pacman_cubic'
+        sampleName = 'garamond'
+        sampleName = 'baskerville'
+        sampleName = 'alegreya_g'
+
+
+
+        sampleName = 'svgs_fira'
+
+        sampleName = 'alegreya_g'
+        sampleName = 'alegreya'
+
+        sampleName = 'alegreya_g'
+        sampleName = 'svgs_opt'
+
+        sampleName = 'pacman_cubic'
+
+        sampleName = 'pacman'
+
+        sampleName = 'torus'
+
+        sampleName = 'svgs_fira_q'
+        sampleName = 'g_fira'
+        sampleName = 'g_fira_c'
+        //sampleName = 'svgs_q'
+        sampleName = 'cc'
+
+
+        sampleName = 'glyphs'
+        sampleName = 'svgs'
+
+
+        sampleName = 'glyph'
+
+        sampleName = 'garamond_italic'
+
+        sampleName = 'baskerville_g'
+
+        sampleName = 'pathfromhell3'
+
+        sampleName = 'simpl'
+
+
+
+        sampleName = 'smiley_1'
+
+        sampleName = 'fa_thumb_up'
+        sampleName = 'svgs_q'
+
+
+        sampleName = 'circle_hollow'
+        sampleName = 'circle_hollow'
+        sampleName = 'smiley_512'
+
+
+
+        sampleName = 'graph'
+        sampleName = 'smiley_0_001'
+        sampleName = 'pie'
+
+
+
+
+
+
+        //sampleName = 'ellipse_seg_cubic';
+
+
+
+
+        //sampleName = 'g_fira_cubic'
+        //sampleName='circle_quad'
+        //sampleName = 'smiley_0_1'
+
+        //sampleName = 'pathfromHell3'
+        //sampleName = 'path_from_hell1'
+
+
+
+
+        let d = samples.filter(val => { return val[sampleName] })[0][sampleName];
+        //console.log('d:', d);
+
+
+        // original path
+        path0.setAttribute('d', d);
+        path_o.setAttribute('d', d);
+
+
+        // parse path to object
+
+        let optionsNormalize = {
+            //normalize: true,
+        }
+
+        perfStart();
+        let pathObj = new SVGii.Path(d, optionsNormalize);
+        //console.log(pathObj);
+
+
+        // optimize output
+        let opts = {
+            //toAbsolute: false,
+            toRelative: true,
+            toShorthands: true,
+            decimals: 'auto',
+            //reorderSub: true,
+            //cubicToArcs: true,
+            optimizeOrder: true,
+
+            //simplify options
+            simplify: true,
+            tolerance: 7.5,
+            keepDetails: true,
+            forceCubic: false,
+            cubicToArc: true,
+            multipass: false,
+
+        };
+
+        let pathDataOpt = pathObj.convert(opts)
+        perfEnd();
+
+        /**
+         * stringify
+         * to d atribute
+         */
+
+        // render
+        let d2 = pathDataOpt.toString()
+        //console.log(d2);
+
+        path.setAttribute('d', d2);
+        path_s.setAttribute('d', d2);
+
+
+        SVGii.adjustViewBox(svg1)
+        SVGii.adjustViewBox(svg_o)
+        SVGii.adjustViewBox(svg_s)
+        SVGii.addMarkers()
+
+        //compare sizes
+        let size0 = d.trim().length;
+        let size0KB = +(size0 / 1024).toFixed(3)
+        let size2 = d2.trim().length;
+        let size2KB = +(size2 / 1024).toFixed(3)
+
+
+        let diff = (size0 - size2)
+        let diffKB = +(diff / 1024).toFixed(3)
+        //let diffPerc = 100/size0 * (size0-diff)
+        let diffRel = +(size0 / size2).toFixed(1)
+        let diffPerc = 100 - (100 / size0 * (diff))
+        console.log(pathObj.pathDataN.length, pathDataOpt);
+        let diffCommands = pathObj.pathDataN.length - pathDataOpt.pathData.length
+
+
+        let rep = `original:${size0KB} KB | ${size2KB} KB \n saved: ${diffKB} KB ${diffRel} times smaller \n  ${diffPerc}% \nsimplified commands: ${diffCommands}`
+
+        console.log(rep);
+
+        /**
+         * visualize commands
+         */
+
+        //console.log('pathDataOpt', pathDataOpt.pathData);
+
+        /*
+        //let pathDataAbs = new SVGii(dN).convert({toAbsolute:true})
+        let pathDataAbs = SVGii.convertPathData(pathDataOpt.pathData, { toAbsolute: true, toLonghands: false, decimals: 3 });
+
+        let svgCommands = SVGii.renderCommands(pathDataAbs)
+        //console.log('svgCommands', svgCommands);
+        svg_s.insertAdjacentHTML('beforeend', svgCommands)
+        */
+
+
+
+        /** 
+         * ellipse arc tests
+         */
+
+         // proper elliptic arcs
+         let dEllipse = `M 50 75 A 50 25 0 0 1 16.34937432451133 31.509222625534758 `;
+         let pathEllipse = new SVGii.Path(dEllipse);
+         let pathDataEllipse = pathEllipse.pathDataN;
+         let areaEllipse = SVGii.getPathArea(pathDataEllipse)
+         console.log('pathDataEllipse', pathDataEllipse, 'areaEllipse', areaEllipse);
+
+
+         // proper elliptic arcs
+         let dEllipse_C = `M50 75c-20.7 0-39.2-6.3-46.6-16-7.5-9.6-2.3-20.5 12.9-27.5`;
+         let pathEllipse_C = new SVGii.Path(dEllipse_C);
+         let pathDataEllipse_C = pathEllipse_C.pathDataN;
+         let areaEllipse_C = SVGii.getPathArea(pathDataEllipse_C)
+         console.log('pathDataEllipse_C', pathDataEllipse_C, 'areaEllipse', areaEllipse_C);
+
+
+
+
+
+
+
+        /**
+           * simple performance test
+           */
+        function perfStart() {
+            t0 = performance.now();
+        }
+
+        function perfEnd(text = '') {
+            t1 = performance.now();
+            total = t1 - t0;
+            console.log(`excecution time ${text}:  ${total} ms`);
+            return total;
+        }
+
+
+        /*
+        function renderPoint(
+            svg,
+            coords,
+            fill = "red",
+            r = "1%",
+            opacity = "1",
+            title='',
+            render = true,
+            id = "",
+            className = ""
+        ) {
+            if (Array.isArray(coords)) {
+                coords = {
+                    x: coords[0],
+                    y: coords[1]
+                };
+            }
+            let marker = `<circle class="${className}" opacity="${opacity}" id="${id}" cx="${coords.x}" cy="${coords.y}" r="${r}" fill="${fill}">
+  <title>${title}</title></circle>`;
+
+            if (render) {
+                svg.insertAdjacentHTML("beforeend", marker);
+            } else {
+                return marker;
+            }
+        }
+        */
+
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+
+
+## the `Path` object
+* parses a raw path data string to a SVG pathdata interface compliant array
+* stores a "normalized" version: 
+  * all commands are absolute
+  * only longhands
+
+  this is usually the best option for all kind of manipulations.
+  Normalized doesn't convert quadratic Béziers to cubic (usually not necessary) as well as arc commands
+
+* `pathDataO` property keeps the original pathdata (including shorthands, relative commands etc)
+* `pathDataN` property keeps the normalized pathdata
+* `pathData` property contains the current processed path data (e.g relative or shorthand commands)
+
+## optimize sub path order
+* optimize sub path order
+* starting points
+
+## arc detection
+* converts cubic segments to arcs
+
+
+
+
+Auto update
+
+```
+"scripts": {
+  "build": "rollup -c",
+  "watch": "rollup -c --watch"
+}
+```
+
+
+```
+npm run watch
+```

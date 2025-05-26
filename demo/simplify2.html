@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <style>
+        svg {
+            /* width: 1000px;*/
+            max-height: 90vh;
+            max-width: 100%;
+            display: block;
+            overflow: visible;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <svg id="svg1">
+        <path id="path0" d="" fill="none" stroke="green" stroke-width="1%" />
+        <path class="showMarkers" id="path" d="" fill="none" stroke="red" stroke-width="0.5%" />
+    </svg>
+
+
+
+    <!-- 
+    -->
+
+
+    <!-- load sample -->
+    <script src="path_samples.js"></script>
+
+    <!-- 
+        <script src="../dist/SVGii.js"></script>
+        <script src="../dist/SVGii_visualize.js"></script>
+    -->
+
+
+    <script src="../dist/SVGiiSimplify.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jsbenchee@latest/dist/jsBenchee.min.js"></script>
+
+
+
+
+    <svg viewBox="0 0 500 500">
+
+        <path id="path1" d=""
+             />
+
+    </svg>
+
+
+    <!-- 
+
+    -->
+
+
+
+    <script>
+
+
+        //console.log(samples);
+
+        let sampleName = 'path_from_hell2'
+        sampleName = 'smiley_0_1'
+        //sampleName = 'cubic_circle_rot'
+        sampleName = 'smiley_0_001'
+        sampleName = 'smiley_1'
+        sampleName = 'circle_quadratic'
+        sampleName = 'g_fira'
+        sampleName = 'g_open'
+        sampleName = 'pivots'
+        sampleName = 'pacman_cubic'
+        sampleName = 'garamond'
+        sampleName = 'baskerville_g'
+        sampleName = 'baskerville'
+        sampleName = 'alegreya_g'
+
+        sampleName = 'svgs_fira'
+
+        sampleName = 'alegreya_g'
+        sampleName = 'alegreya'
+
+        sampleName = 'alegreya_g'
+        sampleName = 'glyph'
+        sampleName = 'svgs_fira_q'
+        sampleName = 'svgs_opt'
+        sampleName = 'g_fira'
+
+        sampleName = 'pacman_cubic'
+        sampleName = 'glyphs'
+
+        sampleName = 'pie'
+        sampleName = 'graph'
+        sampleName = 'simpl'
+        sampleName = 'svgs'
+        sampleName = 'logo'
+
+
+        let d = samples.filter(val => { return val[sampleName] })[0][sampleName];
+        //console.log('d:', d);
+
+
+        // new simplifier
+        perfStart();
+        let pathDataSimple = new SVGiiSimplify(d);
+        perfEnd();
+
+
+        /**
+         * get d string
+         */
+         let dS= pathDataSimple.toString();
+         let pathData = pathDataSimple.getPathData();
+         let pathDataNorm = pathDataSimple.getPathDataNorm();
+
+
+         path1.setAttribute('d', dS )
+
+         console.log('pathDataNorm', pathDataNorm);
+         console.log('pathDataSimple', pathData);
+         console.log('dS', dS);
+
+
+
+        /**
+         * benchmark
+         */
+        /*
+        let options = {
+            tests: [
+                {
+                    name: 'simplify',
+                    scripts: [
+                        '../dist/SVGiiSimplify.js',
+                        `let d = \`${d}\`;
+                        let pathDataSimple = new SVGiiSimplify(d);`
+                    ],
+                },
+            ],
+        };
+
+        // init benchmark
+        let benchmark = new jsBenchee(options);
+        */
+
+
+
+        /**
+           * simple performance test
+           */
+        function perfStart() {
+            t0 = performance.now();
+        }
+
+        function perfEnd(text = '') {
+            t1 = performance.now();
+            total = t1 - t0;
+            console.log(`excecution time ${text}:  ${total} ms`);
+            return total;
+        }
+
+
+        /*
+        function renderPoint(
+            svg,
+            coords,
+            fill = "red",
+            r = "1%",
+            opacity = "1",
+            title='',
+            render = true,
+            id = "",
+            className = ""
+        ) {
+            if (Array.isArray(coords)) {
+                coords = {
+                    x: coords[0],
+                    y: coords[1]
+                };
+            }
+            let marker = `<circle class="${className}" opacity="${opacity}" id="${id}" cx="${coords.x}" cy="${coords.y}" r="${r}" fill="${fill}">
+  <title>${title}</title></circle>`;
+
+            if (render) {
+                svg.insertAdjacentHTML("beforeend", marker);
+            } else {
+                return marker;
+            }
+        }
+        */
+
+
+
+    </script>
+</body>
+
+</html>
