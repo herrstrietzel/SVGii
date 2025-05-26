@@ -1,3 +1,4 @@
 gitnore
 node_modules
-instructions.readme
+__back
+__log
