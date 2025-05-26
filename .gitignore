@@ -1,7 +1,3 @@
-gitnore
 testfiles/
 node_modules/
-__back
-__log
-favicon.svg
 insructions.readme
