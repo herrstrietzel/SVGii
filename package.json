@@ -3,7 +3,14 @@
   "version": "0.0.1",
   "description": "Low level SVG manipulation",
   "type": "module",
-  "main": "src/index.js",
+  "main": "dist/SVGii.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/herrstrietzel/SVGii.git"
+  },
+  "bugs": {
+    "url": "https://github.com/herrstrietzel/SVGii/issues"
+  },
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c --watch"
@@ -20,7 +27,7 @@
     "optimizations"
   ],
   "author": "herrstrietzel",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "terser": "^5.39.2"
   }
